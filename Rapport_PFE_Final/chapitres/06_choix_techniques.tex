@@ -1,0 +1,51 @@
+\chapter{Choix techniques et outils utilisés}
+
+Pour répondre aux exigences de performance et de scalabilité imposées par le cahier des charges, j'ai opté pour la **Stack MERN** (MongoDB, Express, React, Node.js). Le choix de ces technologies n'est pas fortuit, il résulte d'une analyse comparative rigoureuse avec d'autres solutions du marché.
+
+\section{Front-End : React.js, Redux et PWA}
+\textbf{React} a été choisi pour sa capacité à créer des "Single Page Applications" (SPA) ultra-rapides. Le DOM Virtuel de React permet de recharger uniquement les composants modifiés (comme le changement de statut d'un véhicule) sans rafraîchir toute la page web, offrant une fluidité proche d'une application de bureau.
+\begin{itemize}
+    \item \textbf{Approche Mobile-First et PWA :} En 2026, plus de 70\% des réservations B2C se font sur smartphone. L'interface a été conçue en "Mobile-First". De plus, elle a été transformée en \textbf{PWA (Progressive Web App)}. Les clients peuvent "installer" le site sur leur écran d'accueil iOS ou Android sans passer par l'App Store, tout en bénéficiant d'un mode hors-ligne basique grâce aux Service Workers.
+    \item \textbf{Pourquoi pas Angular ou Vue.js ?} Angular est un framework extrêmement lourd, adapté aux gigantesques systèmes bancaires, mais il impose une architecture rigide (TypeScript, RxJS) qui ralentit le prototypage. Vue.js est plus léger, mais l'écosystème communautaire de React reste inégalé.
+    \item \textbf{Gestion d'état global (State Management) :} Grâce à \textbf{Redux Toolkit}, j'ai pu centraliser les données de l'utilisateur (Token JWT, profil, contenu du panier de réservation). Cela permet à n'importe quel composant de l'application d'accéder instantanément à ces informations sans avoir à les faire passer manuellement de parent à enfant (\textit{Prop Drilling}).
+\end{itemize}
+
+\section{Back-End : Node.js, Express et Architecture Microservices}
+Le backend est le moteur logique de l'application. Plutôt que d'opter pour une approche "Monolithique" (un seul gros serveur), j'ai opté pour une \textbf{Architecture Microservices}.
+\begin{itemize}
+    \item \textbf{Pourquoi Node.js plutôt que PHP (Laravel) ou Java (Spring Boot) ?} Le cœur du métier de la location implique de nombreuses opérations asynchrones (requêtes vers la base de données, appels à l'API bancaire Stripe, envoi d'emails). Node.js, grâce à son architecture événementielle non-bloquante (Event Loop), est capable de traiter des milliers de requêtes simultanées sur un seul \textit{thread}, là où PHP aurait dû ouvrir un \textit{thread} par requête, saturant rapidement la mémoire du serveur.
+    \item \textbf{Avantage des Microservices :} En séparant l'application en \texttt{service-location}, \texttt{service-crm} et \texttt{service-erp}, si le service de génération de factures (ERP) plante à cause d'une surcharge mémoire, le système de réservation en ligne continue de fonctionner parfaitement. De plus, cela permet d'utiliser le même langage (JavaScript/TypeScript) sur toute la pile (Full-Stack), réduisant considérablement la friction cognitive lors du développement.
+\end{itemize}
+
+\section{Base de données : MongoDB (NoSQL vs SQL)}
+Le choix de la base de données est l'un des plus critiques de l'architecture. Mon choix s'est porté sur \textbf{MongoDB}, un SGBD orienté documents (NoSQL), au détriment des bases relationnelles classiques comme MySQL ou PostgreSQL.
+\begin{itemize}
+    \item \textbf{Flexibilité du Schéma (Polymorphisme) :} Dans une flotte automobile, les attributs des véhicules varient énormément. Une voiture électrique possèdera un attribut "Autonomie (kWh)", tandis qu'un véhicule thermique aura un attribut "Capacité du réservoir (Litres)". Dans MySQL, cela forcerait la création de multiples tables liées par des \texttt{JOIN} complexes ou des colonnes vides (\texttt{NULL}). Avec MongoDB, chaque véhicule est un document JSON indépendant, offrant une flexibilité absolue.
+    \item \textbf{Performance en lecture (Read-Heavy) :} Un site de réservation reçoit 90\% de requêtes de lecture (recherche de voitures) et 10\% d'écriture (réservations). En stockant toutes les données d'un véhicule (modèle, caractéristiques, tableau d'images) dans un document unique, MongoDB permet de récupérer les annonces sans aucune jointure, ce qui divise le temps de réponse par trois.
+    \item \textbf{Intégrité des données avec Mongoose :} L'un des risques du NoSQL est l'absence de structure. J'ai pallié cela en utilisant l'ODM (Object Data Modeling) \textbf{Mongoose}, qui permet d'imposer un schéma strict et de rejeter les données invalides au niveau du serveur Node.js, avant même qu'elles n'atteignent la base.
+\end{itemize}
+
+\section{Outils de développement et Méthodologie}
+\begin{itemize}
+    \item \textbf{VS Code :} L'IDE principal pour l'écriture du code.
+    \item \textbf{Git \& GitHub :} Outil de versioning pour sauvegarder l'historique du code.
+    \item \textbf{Figma :} Pour réaliser les maquettes UI/UX avant le codage.
+    \item \textbf{Docker :} Pour "conteneuriser" l'application afin qu'elle fonctionne à l'identique sur ma machine et sur le serveur de production.
+\end{itemize}
+
+\section{Méthodologie de travail : Agile Scrum}
+Pour garantir la réussite du projet dans les délais impartis, j'ai délaissé le traditionnel "Cycle en V" au profit de la méthode \textbf{Agile Scrum}. Cette approche itérative m'a permis de livrer des fonctionnalités opérationnelles de manière continue.
+\begin{itemize}
+    \item \textbf{Sprints :} Le développement a été découpé en cycles de 2 semaines (Sprints). À la fin de chaque Sprint, un module (ex: Le système de paiement) était testé et validé.
+    \item \textbf{Estimation (Planning Poker) :} La complexité des tâches a été évaluée via la suite de Fibonacci. Par exemple, l'algorithme de calcul de TVA a été estimé à 5 points, contre 13 points pour la gestion des conflits de réservation.
+    \item \textbf{Outils de gestion :} J'ai utilisé \textbf{Trello} (ou Jira) pour modéliser le \textit{Product Backlog} avec un tableau Kanban (À faire, En cours, En test, Terminé).
+\end{itemize}
+
+\section{Planification et Diagramme de Gantt}
+La planification temporelle du projet s'est étalée sur 3 mois :
+\begin{enumerate}
+    \item \textbf{Mois 1 (Analyse \& Design) :} Rédaction du cahier des charges, modélisation UML/Merise, création des maquettes UI/UX sur Figma.
+    \item \textbf{Mois 2 (Développement Backend \& Base de données) :} Configuration de MongoDB, création des API RESTful avec Node.js, et sécurisation JWT.
+    \item \textbf{Mois 3 (Développement Frontend \& Tests) :} Intégration React, liaison API, tests Cypress et déploiement final.
+\end{enumerate}
+\textit{(Remarque : Un diagramme de Gantt détaillé généré via MS Project a été annexé au présent rapport pour illustrer ce découpage).}

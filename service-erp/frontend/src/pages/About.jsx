@@ -7,27 +7,16 @@ const About = () => {
   return (
     <Result
       status="info"
-      title={'IDURAR'}
-      subTitle={translate('Do you need help on customize of this app')}
+      title={'Prestige Maroc'}
+      subTitle={'Plateforme ERP & CRM de location de voitures'}
       extra={
         <>
           <p>
-            Website : <a href="https://www.idurarapp.com">www.idurarapp.com</a>{' '}
+            Projet de Fin d'Études
           </p>
           <p>
-            GitHub :{' '}
-            <a href="https://github.com/idurar/idurar-erp-crm">
-              https://github.com/idurar/idurar-erp-crm
-            </a>
+            Développé avec ❤️ pour la gestion de location
           </p>
-          <Button
-            type="primary"
-            onClick={() => {
-              window.open(`https://www.idurarapp.com/contact-us/`);
-            }}
-          >
-            {translate('Contact us')}
-          </Button>
         </>
       }
     />

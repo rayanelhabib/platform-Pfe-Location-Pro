@@ -1,0 +1,102 @@
+\begin{titlepage}
+    \begin{center}
+        % Logos
+        \begin{minipage}{0.45\textwidth}
+            \begin{flushleft}
+                \includegraphics[height=2.5cm]{"images/bts alekenyd.jpg"}
+            \end{flushleft}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.45\textwidth}
+            \begin{flushright}
+                \includegraphics[height=2.5cm]{images/Prestigemaroc.png}
+            \end{flushright}
+        \end{minipage}
+        
+        \vspace*{0.5cm}
+        \large \textbf{MINISTÈRE DE L'ENSEIGNEMENT SUPÉRIEUR} \\
+        \textbf{ÉTABLISSEMENT ALKENDI}
+        
+        \vspace{1cm}
+        \Large \textbf{RAPPORT DE STAGE DE FIN D'ÉTUDES} \\
+        \normalsize Pour l'obtention du \textbf{Brevet de Technicien Supérieur (BTS)} \\
+        \normalsize \textbf{Filière : Développement d'Applications Informatiques (DAI)}
+        
+        \vspace{1.5cm}
+        \rule{\linewidth}{0.5mm} \\[0.4cm]
+        \huge \textbf{Conception, Architecture et Développement d'un Écosystème Numérique Unifié :} \\[0.2cm]
+        \LARGE \textbf{Service Location, Service ERP et Service CRM} \\[0.4cm]
+        \rule{\linewidth}{0.5mm}
+        
+        \vfill
+        
+        \begin{minipage}{0.45\textwidth}
+            \begin{flushleft}
+                \large \textbf{Réalisé par :} \\
+                \textbf{Rayan El Habib}
+            \end{flushleft}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.45\textwidth}
+            \begin{flushright}
+                \large \textbf{Entreprise d'accueil :} \\
+                \textbf{Prestige Maroc}
+            \end{flushright}
+        \end{minipage}
+        
+        \vfill
+        
+        \large \textbf{Année Universitaire : 2025 / 2026}
+    \end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\chapter*{Dédicace}
+\addcontentsline{toc}{chapter}{Dédicace}
+\textit{Je dédie ce travail à mes parents, pour leur soutien inconditionnel et leurs sacrifices tout au long de mes études. À mes amis et à tous ceux qui ont cru en moi et m'ont encouragé à aller toujours plus loin dans le domaine passionnant de l'ingénierie logicielle.}
+
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+Je tiens à exprimer ma profonde gratitude à Monsieur \textbf{Hassan Alaoui}, mon encadrant pédagogique à l'établissement Alkendi, pour ses précieux conseils, sa disponibilité constante et la rigueur scientifique qu'il m'a inculquée tout au long de ma formation en BTS DAI.
+Mes vifs remerciements s'adressent également à l'équipe dirigeante de \textbf{Prestige Maroc}, et plus particulièrement à mon encadrant industriel, pour m'avoir fait confiance et m'avoir intégré au sein d'un environnement professionnel stimulant. Enfin, je remercie chaleureusement les membres du jury pour l'honneur qu'ils me font en évaluant ce rapport de fin d'études.
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+Ce projet de fin d'études porte sur la conception et le développement d'un Écosystème Numérique Unifié (ERP, CRM, Location B2C) pour l'agence de location de voitures Prestige Maroc. L'objectif majeur était de résoudre les problématiques de gestion logistique (conflits de réservation, facturation manuelle) en migrant vers une architecture moderne Cloud-Native.
+La solution adoptée est une architecture \textbf{Microservices API-First} basée sur la Stack \textbf{MERN} (MongoDB, Express, React, Node.js). Le projet intègre des concepts d'ingénierie avancés : Sécurité (RBAC, JWT), optimisation (Redis, Verrouillage Optimiste), et DevOps (Docker, CI/CD). Ce système permet à l'entreprise d'optimiser sa gestion quotidienne de manière totalement numérisée. \\
+\textbf{Mots-clés :} BTS DAI, Microservices, MERN, Cloud, Docker, ERP, CRM.
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This end-of-studies project focuses on the design and development of a Unified Digital Ecosystem (ERP, CRM, B2C Rental) for the car rental agency Prestige Maroc. The primary objective was to solve logistical management issues (booking conflicts, manual billing) by migrating to a modern Cloud-Native architecture.
+The adopted solution is an \textbf{API-First Microservices} architecture based on the \textbf{MERN} Stack (MongoDB, Express, React, Node.js). The project integrates advanced engineering concepts: Security (RBAC, JWT), Database Optimization (Redis, Optimistic Locking), and DevOps (Docker, CI/CD). This system enables the company to optimize its daily management in a fully digitalized way. \\
+\textbf{Keywords:} BTS DAI, Microservices, MERN, Cloud, Docker, ERP, CRM.
+
+\chapter*{Liste des abréviations}
+\addcontentsline{toc}{chapter}{Liste des abréviations}
+\begin{itemize}
+    \item \textbf{API :} Application Programming Interface
+    \item \textbf{BTS DAI :} Brevet de Technicien Supérieur - Développement d'Applications Informatiques
+    \item \textbf{CRM :} Customer Relationship Management
+    \item \textbf{ERP :} Enterprise Resource Planning
+    \item \textbf{JWT :} JSON Web Token
+    \item \textbf{MCD / MLD :} Modèle Conceptuel de Données / Modèle Logique de Données
+    \item \textbf{MERN :} MongoDB, Express, React, Node.js
+    \item \textbf{RBAC :} Role-Based Access Control
+    \item \textbf{UI / UX :} User Interface / User Experience
+\end{itemize}
+
+\chapter*{Glossaire}
+\addcontentsline{toc}{chapter}{Glossaire}
+\begin{itemize}
+    \item \textbf{Cloud-Native :} Application conçue spécifiquement pour fonctionner dans un environnement Cloud (ex: AWS, Google Cloud).
+    \item \textbf{NoSQL :} Modèle de base de données non relationnel, offrant une grande flexibilité et évolutivité.
+    \item \textbf{Race Condition :} Anomalie logicielle survenant lorsque plusieurs processus tentent de modifier la même donnée simultanément.
+    \item \textbf{Webhook :} Mécanisme permettant à une application tierce (comme Stripe) d'envoyer des informations en temps réel à notre serveur.
+\end{itemize}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage

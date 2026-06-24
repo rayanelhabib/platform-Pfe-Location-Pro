@@ -91,3 +91,159 @@ h6 {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+/* ==========================================================================
+   Premium UI & Animations
+   ========================================================================== */
+
+/* Fade-in Animation for Layout */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ant-layout-content {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Sidebar Navigation enhancements (Minimalist Enterprise) */
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+  background: transparent !important;
+}
+.ant-layout-sider {
+  z-index: 10;
+}
+
+/* Custom Scrollbar for Sidebar */
+.navigation ::-webkit-scrollbar {
+  width: 4px;
+}
+.navigation ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.navigation ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+.navigation:hover ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Menu Items (Flat & Sharp) */
+.ant-menu-dark .ant-menu-item {
+  transition: all 0.2s ease;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  color: #94a3b8 !important;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  padding-left: 24px !important;
+  border-left: 3px solid transparent;
+}
+
+/* Icon adjustments */
+.ant-menu-dark .ant-menu-item .anticon {
+  margin-right: 12px !important;
+  font-size: 16px !important;
+}
+
+/* Hover State */
+.ant-menu-dark .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #f8fafc !important;
+}
+
+/* Active State (Left Border Accent) */
+.ant-menu-dark .ant-menu-item-selected {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  border-left: 3px solid #2563eb !important;
+  font-weight: 600 !important;
+}
+.ant-menu-dark .ant-menu-item-selected .anticon {
+  color: #3b82f6 !important;
+}
+
+/* Header Glassmorphism */
+.ant-layout-header {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 4px 0 rgba(0,21,41,.04);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Shadcn UI Table Overrides */
+.ant-table-wrapper {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+.ant-table-thead > tr > th {
+  background-color: #ffffff !important;
+  color: #64748b !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 12px 16px !important;
+}
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 16px !important;
+  color: #0f172a;
+}
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: #f8fafc !important;
+  transition: background-color 0.2s ease;
+}
+
+/* Shadcn UI Card (whiteBox) Overrides */
+.whiteBox {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+}
+.whiteBox > .ant-row > .ant-col > h1, 
+.whiteBox > .ant-row > .ant-col > h2,
+.whiteBox > .ant-row > .ant-col > h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+/* Shadcn UI Button Overrides */
+.ant-btn-primary {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-radius: 0.375rem !important;
+  border: none !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease !important;
+}
+.ant-btn-primary:hover {
+  background-color: #1e293b !important;
+  transform: translateY(-1px);
+}
+.ant-btn-default {
+  border: 1px solid #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 0.375rem !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+}
+.ant-btn-default:hover {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}

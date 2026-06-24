@@ -1,0 +1,106 @@
+\documentclass[12pt, a4paper]{report}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+% Configuration des couleurs des titres (Demande personnalisée)
+\definecolor{MonVert}{RGB}{34, 139, 34} % Un vert lisible (Forest Green)
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{red}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+  
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{MonVert}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{MonVert}}
+  {\thesubsection}{1em}{}
+  
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{MonVert}}
+  {\thesubsubsection}{1em}{}
+
+% Configuration de la page
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+\onehalfspacing
+
+% ==========================================
+% EN-TÊTE ET PIED DE PAGE (Sur toutes les pages)
+% ==========================================
+\pagestyle{fancy}
+\fancyhf{} % Nettoie les anciens headers/footers
+\fancyhead[L]{\textit{Rapport de Stage de Fin d'Études}}
+\fancyhead[R]{\textbf{BTS DAI}}
+\fancyfoot[L]{Rayan El Habib}
+\fancyfoot[C]{Prestige Maroc}
+\fancyfoot[R]{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt} % Ligne sous l'en-tête
+\renewcommand{\footrulewidth}{0.4pt} % Ligne au-dessus du pied de page
+
+% Styles TikZ
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!10, rounded corners]
+\tikzstyle{database} = [cylinder, shape border rotate=90, aspect=0.25, draw, minimum height=2cm, minimum width=1.5cm, fill=green!10, text centered]
+\tikzstyle{actor} = [circle, draw=black, fill=orange!10, minimum size=1.5cm, text centered]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{usecase} = [ellipse, draw=black, fill=yellow!20, minimum width=3cm, text centered]
+\tikzstyle{line} = [draw, thick, -]
+
+\begin{document}
+
+% 00. Pages préliminaires
+\input{chapitres/00_pages_preliminaires.tex}
+
+\pagenumbering{arabic}
+
+% 01. Introduction
+\input{chapitres/01_introduction.tex}
+
+% 02. Entreprise
+\input{chapitres/02_entreprise.tex}
+
+% 03. Existant
+\input{chapitres/03_existant.tex}
+
+% 04. Cahier des charges
+\input{chapitres/04_cahier_charges.tex}
+
+% 05. Conception
+\input{chapitres/05_conception.tex}
+
+% 06. Choix techniques
+\input{chapitres/06_choix_techniques.tex}
+
+% 07. Réalisation
+\input{chapitres/07_realisation.tex}
+
+% 08. Tests
+\input{chapitres/08_tests.tex}
+
+% 09. Conclusion
+\input{chapitres/09_conclusion.tex}
+
+% 10. Bibliographie
+\input{chapitres/10_bibliographie.tex}
+
+% 11. Annexes
+\input{chapitres/11_annexes.tex}
+
+\end{document}

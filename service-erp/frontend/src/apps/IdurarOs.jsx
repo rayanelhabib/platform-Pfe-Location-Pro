@@ -1,4 +1,31 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, info: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    this.setState({ info });
+    console.error("ErrorBoundary caught an error", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', background: 'red', color: 'white' }}>
+          <h1>React Error!</h1>
+          <p>{this.state.error?.toString()}</p>
+          <pre>{this.state.info?.componentStack}</pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 import { useSelector } from 'react-redux';
 import { selectAuth } from '@/redux/auth/selectors';
@@ -11,13 +38,15 @@ import { notification } from 'antd';
 const ErpApp = lazy(() => import('./ErpApp'));
 
 const DefaultApp = () => (
-  <Localization>
-    <AppContextProvider>
-      <Suspense fallback={<PageLoader />}>
-        <ErpApp />
-      </Suspense>
-    </AppContextProvider>
-  </Localization>
+  <ErrorBoundary>
+    <Localization>
+      <AppContextProvider>
+        <Suspense fallback={<PageLoader />}>
+          <ErpApp />
+        </Suspense>
+      </AppContextProvider>
+    </Localization>
+  </ErrorBoundary>
 );
 
 export default function IdurarOs() {

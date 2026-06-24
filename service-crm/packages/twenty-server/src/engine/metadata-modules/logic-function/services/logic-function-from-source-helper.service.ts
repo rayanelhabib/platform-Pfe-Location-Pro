@@ -61,11 +61,11 @@ export class LogicFunctionFromSourceHelperService {
       sourceHandlerPath: join(
         logicFunctionSubfolder,
         DEFAULT_SOURCE_HANDLER_PATH,
-      ),
+      ).replace(/\\/g, '/'),
       builtHandlerPath: join(
         logicFunctionSubfolder,
         DEFAULT_BUILT_HANDLER_PATH,
-      ),
+      ).replace(/\\/g, '/'),
     };
   }
 

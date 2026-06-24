@@ -69,15 +69,15 @@ export default function ErpCrmApp() {
             </Content>
           </Layout>
         ) : (
-          <Layout>
+          <Layout style={{ background: '#f4f7fe' }}>
             <HeaderContent />
             <Content
               style={{
-                margin: '40px auto 30px',
+                margin: '30px auto',
                 overflow: 'initial',
                 width: '100%',
-                padding: '0 50px',
-                maxWidth: 1400,
+                padding: '0 32px',
+                maxWidth: 'none',
               }}
             >
               <AppRouter />

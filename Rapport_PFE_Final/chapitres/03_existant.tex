@@ -1,0 +1,55 @@
+\chapter{Étude de l'existant et analyse du besoin}
+
+\section{Critique approfondie de l'existant}
+Avant le lancement de ce projet, la gestion de l'agence Prestige Maroc s'appuyait quasi-exclusivement sur des processus manuels et des outils bureautiques obsolètes. Le workflow typique se déroulait de la manière suivante :
+\begin{enumerate}
+    \item Le client contacte l'agence par téléphone, WhatsApp, ou s'y déplace physiquement.
+    \item L'agent commercial doit interrompre ses tâches pour consulter un fichier "Excel Partagé" (souvent corrompu ou verrouillé par un autre utilisateur) ou vérifier un tableau blanc physique dans l'arrière-boutique afin de s'assurer de la disponibilité d'un véhicule.
+    \item Si le véhicule est disponible, le commercial rédige le contrat sur papier carbone.
+    \item La facture est saisie manuellement sur Microsoft Word en recopiant les informations, puis imprimée.
+    \item Le suivi du kilométrage et des vidanges est noté dans un cahier physique tenu par le chef de parc.
+\end{enumerate}
+
+\section{Les problèmes et conséquences de l'existant}
+Ce fonctionnement archaïque présente des limites majeures qui freinent gravement la croissance de l'entreprise :
+\begin{itemize}
+    \item \textbf{Conflits de réservation (Surbooking) :} C'est le problème le plus critique. Si deux commerciaux consultent le tableau Excel au même moment et promettent le même véhicule à deux clients différents pour les mêmes dates, cela crée une insatisfaction client catastrophique.
+    \item \textbf{Lenteur administrative et perte de productivité :} La double saisie des informations (sur le contrat papier, puis sur la facture Word, puis dans le registre comptable) prend en moyenne 25 minutes par client.
+    \item \textbf{Risques liés à la sécurité des données :} L'absence d'une base de données centralisée (Cloud) expose l'entreprise à une perte totale de son historique client en cas de vol d'ordinateur, de crash de disque dur ou d'incendie. De plus, les données personnelles des clients ne sont pas protégées conformément aux standards modernes (RGPD).
+    \item \textbf{Manque de visibilité financière (Reporting) :} La direction est incapable de connaître instantanément le chiffre d'affaires du mois en cours ou le taux de rotation exact de la flotte sans passer des heures à consolider les différents fichiers Excel.
+    \item \textbf{Absence de canal de vente digital :} En 2026, l'absence d'un site web transactionnel signifie que Prestige Maroc perd quotidiennement des clients (touristes internationaux) qui réservent exclusivement en ligne et paient par carte de crédit avant même d'arriver dans le pays.
+\end{itemize}
+
+\section{Analyse Stratégique : Matrice SWOT}
+Pour justifier la pertinence de la digitalisation, j'ai réalisé une analyse \textbf{SWOT} :
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{7cm}|p{7cm}|}
+        \hline
+        \cellcolor{green!15}\textbf{Forces (Strengths)} & \cellcolor{red!15}\textbf{Faiblesses (Weaknesses)} \\
+        - Flotte récente. \newline - Bonne réputation. & - Gestion sur papier et Excel. \newline - Risques d'erreurs humaines. \\
+        \hline
+        \cellcolor{blue!15}\textbf{Opportunités (Opportunities)} & \cellcolor{orange!15}\textbf{Menaces (Threats)} \\
+        - Digitalisation du secteur. \newline - Paiement en ligne. & - Concurrence des plateformes (Booking). \newline - Perte de données sans Cloud. \\
+        \hline
+    \end{tabular}
+    \caption{Matrice SWOT de Prestige Maroc}
+\end{table}
+
+\section{Analyse des besoins}
+
+\subsection{Besoins fonctionnels}
+Le système informatique doit impérativement permettre :
+\begin{itemize}
+    \item \textbf{Côté Client :} L'inscription/connexion, l'affichage du catalogue de voitures, la recherche avec filtres (prix, marque), et la réservation avec paiement sécurisé.
+    \item \textbf{Côté Admin (ERP/CRM) :} La gestion des annonces (ajouter/supprimer), la gestion des utilisateurs, la génération automatique de devis/factures PDF, et un tableau de bord analytique.
+\end{itemize}
+
+\subsection{Besoins non fonctionnels}
+\begin{itemize}
+    \item \textbf{Sécurité :} Protection des données personnelles (RGPD) et cryptage des mots de passe.
+    \item \textbf{Ergonomie :} Interface simple, moderne et parfaitement "Responsive Design" (adaptée aux smartphones).
+    \item \textbf{Fiabilité :} Le site doit être capable de gérer un grand nombre de connexions simultanées sans planter.
+\end{itemize}

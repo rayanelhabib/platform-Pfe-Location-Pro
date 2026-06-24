@@ -1,0 +1,34 @@
+\chapter{Cahier des charges}
+
+\section{Objectif général du projet}
+Concevoir une plateforme de location web B2C, couplée à un back-office (ERP et CRM) pour automatiser 100\% des flux logistiques et financiers de Prestige Maroc.
+
+\section{Acteurs du système}
+\begin{itemize}
+    \item \textbf{Le Visiteur :} Peut uniquement consulter le catalogue des véhicules.
+    \item \textbf{Le Client :} Utilisateur inscrit, peut réserver, payer et consulter son historique.
+    \item \textbf{Le Commercial :} Gère les contrats, valide les réservations et met à jour le statut des véhicules.
+    \item \textbf{L'Administrateur (Directeur) :} A tous les droits, y compris la modification des taux de TVA et l'accès au bilan financier.
+\end{itemize}
+
+\section{Règles de gestion métier}
+La modélisation du système repose sur des règles de gestion métier strictes, définies en collaboration avec la direction financière de l'agence :
+\begin{itemize}
+    \item \textbf{RG-01 (Authentification) :} Un visiteur doit obligatoirement créer un compte et être authentifié via un Token JWT pour accéder à l'interface de paiement.
+    \item \textbf{RG-02 (Conflit et Disponibilité) :} Un véhicule ne peut être verrouillé pour un client que si son statut est explicitement "Disponible". En cas de requêtes simultanées à la même milliseconde pour le même véhicule, le système doit rejeter la seconde requête via un mécanisme de contrôle de concurrence (Verrouillage Optimiste).
+    \item \textbf{RG-03 (Paiement et Acompte) :} Pour confirmer une réservation, le client doit s'acquitter en ligne d'un acompte équivalent à 30\% du montant total. Le solde restant sera facturé sur place.
+    \item \textbf{RG-04 (Intégrité Fiscale) :} Une facture générée au format PDF est immuable. Elle est horodatée et se voit attribuer un numéro de série séquentiel. Aucune modification ou suppression de facture n'est permise au niveau de l'interface, conformément à la loi des finances.
+\end{itemize}
+
+\section{Contraintes Légales et Normes de Sécurité}
+
+\subsection{Conformité RGPD (Règlement Général sur la Protection des Données)}
+Étant donné que la plateforme, accessible aux touristes européens, récolte des données personnelles sensibles (Nom, Prénom, Email, Historique de géolocalisation), elle doit impérativement respecter le RGPD :
+\begin{itemize}
+    \item \textbf{Consentement Actif :} Présence obligatoire d'une case à cocher non pré-remplie "J'accepte les CGU et la politique de confidentialité" lors du processus d'inscription.
+    \item \textbf{Droit à l'oubli :} L'utilisateur a la possibilité de supprimer de manière autonome et définitive son compte depuis son espace profil.
+    \item \textbf{Anonymisation des Données :} Si un client demande la suppression de son compte, ses factures passées sont conservées par l'ERP pour des raisons comptables, mais ses informations nominatives (Nom, Prénom) sont écrasées et remplacées par un \textit{hash} irréversible.
+\end{itemize}
+
+\subsection{Sécurité Bancaire (Norme PCI-DSS)}
+La manipulation des données de cartes de crédit est soumise à la très stricte norme internationale \textbf{PCI-DSS}. Afin d'exonérer Prestige Maroc de cette lourde responsabilité juridique, nous avons pris la décision de ne \textbf{jamais} stocker ni faire transiter les numéros de carte de crédit (PAN) sur notre serveur \texttt{service-location} ou dans notre base MongoDB. Tout le processus d'encaissement est déporté de manière sécurisée vers l'API de \textbf{Stripe}, qui garantit un chiffrement de bout en bout (AES-256) et une conformité 3D-Secure 2.0.

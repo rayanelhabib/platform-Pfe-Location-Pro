@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Drawer, Layout, Menu } from 'antd';
 
 import { useAppContext } from '@/context/appContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentAdmin } from '@/redux/auth/selectors';
 
 import useLanguage from '@/locale/useLanguage';
 import logoIcon from '@/style/images/logo-icon.svg';
@@ -10,23 +12,18 @@ import logoText from '@/style/images/logo-text.svg';
 
 import useResponsive from '@/hooks/useResponsive';
 
-import {
-  SettingOutlined,
-  CustomerServiceOutlined,
-  ContainerOutlined,
-  FileSyncOutlined,
-  DashboardOutlined,
-  TagOutlined,
-  TagsOutlined,
-  UserOutlined,
-  CreditCardOutlined,
-  MenuOutlined,
-  FileOutlined,
-  ShopOutlined,
-  FilterOutlined,
-  WalletOutlined,
-  ReconciliationOutlined,
-} from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
+import { 
+  LayoutDashboard, 
+  Users, 
+  FileText, 
+  FileSignature, 
+  CreditCard, 
+  Wallet, 
+  Landmark, 
+  Settings, 
+  Info 
+} from 'lucide-react';
 
 const { Sider } = Layout;
 
@@ -47,56 +44,69 @@ function Sidebar({ collapsible, isMobile = false }) {
 
   const translate = useLanguage();
   const navigate = useNavigate();
+  const currentAdmin = useSelector(selectCurrentAdmin);
+  const role = currentAdmin?.role || 'owner';
 
   const items = [
     {
       key: 'dashboard',
-      icon: <DashboardOutlined />,
+      icon: <LayoutDashboard size={20} strokeWidth={1.5} />,
       label: <Link to={'/'}>{translate('dashboard')}</Link>,
+      roles: ['owner', 'manager', 'sales', 'accountant'],
     },
     {
       key: 'customer',
-      icon: <CustomerServiceOutlined />,
+      icon: <Users size={20} strokeWidth={1.5} />,
       label: <Link to={'/customer'}>{translate('customers')}</Link>,
+      roles: ['owner', 'manager', 'sales'],
     },
 
     {
       key: 'invoice',
-      icon: <ContainerOutlined />,
+      icon: <FileText size={20} strokeWidth={1.5} />,
       label: <Link to={'/invoice'}>{translate('invoices')}</Link>,
+      roles: ['owner', 'manager', 'sales', 'accountant'],
     },
     {
       key: 'quote',
-      icon: <FileSyncOutlined />,
+      icon: <FileSignature size={20} strokeWidth={1.5} />,
       label: <Link to={'/quote'}>{translate('quote')}</Link>,
+      roles: ['owner', 'manager', 'sales'],
     },
     {
       key: 'payment',
-      icon: <CreditCardOutlined />,
+      icon: <CreditCard size={20} strokeWidth={1.5} />,
       label: <Link to={'/payment'}>{translate('payments')}</Link>,
+      roles: ['owner', 'manager', 'accountant'],
     },
 
     {
       key: 'paymentMode',
       label: <Link to={'/payment/mode'}>{translate('payments_mode')}</Link>,
-      icon: <WalletOutlined />,
+      icon: <Wallet size={20} strokeWidth={1.5} />,
+      roles: ['owner', 'manager', 'accountant'],
     },
     {
       key: 'taxes',
       label: <Link to={'/taxes'}>{translate('taxes')}</Link>,
-      icon: <ShopOutlined />,
+      icon: <Landmark size={20} strokeWidth={1.5} />,
+      roles: ['owner', 'manager', 'accountant'],
     },
     {
       key: 'generalSettings',
       label: <Link to={'/settings'}>{translate('settings')}</Link>,
-      icon: <SettingOutlined />,
+      icon: <Settings size={20} strokeWidth={1.5} />,
+      roles: ['owner'],
     },
     {
       key: 'about',
       label: <Link to={'/about'}>{translate('about')}</Link>,
-      icon: <ReconciliationOutlined />,
+      icon: <Info size={20} strokeWidth={1.5} />,
+      roles: ['owner', 'manager', 'sales', 'accountant'],
     },
   ];
+
+  const filteredItems = items.filter((item) => item.roles.includes(role));
 
   useEffect(() => {
     if (location)
@@ -132,46 +142,63 @@ function Sidebar({ collapsible, isMobile = false }) {
       style={{
         overflow: 'auto',
         height: '100vh',
-
         position: isMobile ? 'absolute' : 'relative',
-        bottom: '20px',
-        ...(!isMobile && {
-          // border: 'none',
-          ['left']: '20px',
-          top: '20px',
-          // borderRadius: '8px',
-        }),
+        left: 0,
+        top: 0,
+        bottom: 0,
+        background: '#0f172a',
+        boxShadow: 'none',
+        borderRight: '1px solid rgba(255,255,255,0.05)',
+        zIndex: 100,
       }}
-      theme={'light'}
+      theme={'dark'}
     >
       <div
         className="logo"
         onClick={() => navigate('/')}
         style={{
           cursor: 'pointer',
+          padding: '24px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsible && isNavMenuClose ? 'center' : 'flex-start',
         }}
       >
-        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '40px' }} />
-
+        <div style={{
+          width: '24px',
+          height: '24px',
+          background: '#ffffff',
+          borderRadius: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: collapsible && isNavMenuClose ? '0' : '12px',
+          flexShrink: 0
+        }}>
+          <div style={{ width: '8px', height: '8px', background: '#0f172a', borderRadius: '50%' }}></div>
+        </div>
+        
         {!showLogoApp && (
-          <img
-            src={logoText}
-            alt="Logo"
-            style={{
-              marginTop: '3px',
-              marginLeft: '10px',
-              height: '38px',
-            }}
-          />
+          <span style={{
+            color: '#fff',
+            fontSize: '18px',
+            fontWeight: '600',
+            letterSpacing: '1px',
+            whiteSpace: 'nowrap'
+          }}>
+            Prestige Maroc
+          </span>
         )}
       </div>
       <Menu
-        items={items}
+        items={filteredItems}
         mode="inline"
-        theme={'light'}
+        theme={'dark'}
         selectedKeys={[currentPath]}
         style={{
           width: 256,
+          background: 'transparent',
+          padding: '0 12px'
         }}
       />
     </Sider>

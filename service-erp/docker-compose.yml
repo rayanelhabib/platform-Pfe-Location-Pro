@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  mongo-erp:
+    image: mongo:latest
+    ports:
+      - "27019:27017"
+    restart: always

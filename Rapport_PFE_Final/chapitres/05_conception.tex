@@ -1,0 +1,107 @@
+\chapter{Analyse fonctionnelle et conception}
+
+\section{Diagramme de Cas d'Utilisation (UML)}
+Afin de modéliser les interactions entre les acteurs et le système, nous avons élaboré le diagramme de cas d'utilisation suivant :
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.8, transform shape]
+        \node[actor] (client) at (-2, 4) {Client};
+        \node[actor] (admin) at (-2, 0) {Administrateur};
+        
+        \node[usecase] (uc1) at (4, 5) {S'inscrire / Se connecter};
+        \node[usecase] (uc2) at (4, 3) {Réserver un véhicule};
+        \node[usecase] (uc3) at (4, 1) {Gérer le parc auto};
+        \node[usecase] (uc4) at (4, -1) {Générer les factures PDF};
+        
+        \draw[line] (client) -- (uc1);
+        \draw[line] (client) -- (uc2);
+        \draw[line] (admin) -- (uc1);
+        \draw[line] (admin) -- (uc3);
+        \draw[line] (admin) -- (uc4);
+    \end{tikzpicture}
+    \caption{Diagramme de Cas d'Utilisation}
+\end{figure}
+\textit{Explication : Ce diagramme illustre clairement la séparation des privilèges (RBAC). Le client interagit avec la partie Front-Office (réservation), tandis que l'administrateur gère le Back-Office (véhicules, facturation).}
+
+\section{Diagramme de Séquence : Processus de Réservation}
+Ce diagramme détaille l'échange de messages temporels lors du paiement :
+\begin{itemize}
+    \item Le \textbf{Client} envoie une requête de réservation au \textbf{Front-End React}.
+    \item Le \textbf{Front-End} interroge le \textbf{Backend Node.js} pour vérifier la disponibilité.
+    \item Le \textbf{Backend} consulte la base \textbf{MongoDB}.
+    \item Si disponible, Node.js contacte l'API \textbf{Stripe} pour le paiement.
+    \item Retour de la confirmation au client et génération de la facture PDF.
+\end{itemize}
+\textit{Explication : La modélisation de cette séquence est cruciale pour identifier le moment exact où le "Verrouillage Optimiste" doit être déclenché pour éviter le surbooking.}
+
+\section{Modèle Conceptuel de Données (MCD - Merise)}
+Bien que MongoDB soit orienté documents (NoSQL), la structuration conceptuelle Merise permet d'identifier les entités fondamentales :
+\begin{itemize}
+    \item \textbf{Entité CLIENT} (ID\_Client, Nom, Prenom, Email, Password)
+    \item \textbf{Entité VEHICULE} (Immatriculation, Marque, Modèle, Prix\_Jour, Statut)
+    \item \textbf{Relation RESERVER} (Date\_Debut, Date\_Fin, Montant\_Total)
+\end{itemize}
+\textit{Règle de cardinalité :} Un Client peut effectuer (0,n) réservations, mais une réservation concerne exactement (1,1) client et (1,1) véhicule.
+
+\section{Modèle Logique de Données (MLD)}
+Traduction du MCD pour notre architecture NoSQL (Collections JSON) :
+\begin{itemize}
+    \item \texttt{Users\_Collection} : \{ \_id, name, email, password, role \}
+    \item \texttt{Cars\_Collection} : \{ \_id, brand, model, pricePerDay, isAvailable \}
+    \item \texttt{Bookings\_Collection} : \{ \_id, user\_id (Ref Users), car\_id (Ref Cars), startDate, endDate, totalAmount \}
+\end{itemize}
+
+\section{Diagramme d'Activité : Gestion des Annonces}
+Le flux de travail (Workflow) d'un Administrateur gérant la flotte automobile :
+\begin{itemize}
+    \item \textbf{Étape 1 :} L'administrateur se connecte (Vérification JWT).
+    \item \textbf{Étape 2 :} Il saisit les informations d'un nouveau véhicule.
+    \item \textbf{Étape 3 :} L'image du véhicule est uploadée vers le serveur de stockage (Amazon S3).
+    \item \textbf{Étape 4 :} Si l'upload réussit, les métadonnées sont sauvegardées dans MongoDB.
+    \item \textbf{Étape 5 :} Le catalogue React se met à jour instantanément.
+\end{itemize}
+\textit{Explication : Le diagramme d'activité met en lumière les conditions logiques ("Si upload réussit"). Il permet d'anticiper la gestion des erreurs (ex: afficher un message si le serveur S3 est hors ligne).}
+
+\section{Diagramme de Classes (UML)}
+Bien que MongoDB soit orienté document, la modélisation objet (POO) via le Diagramme de Classes reste pertinente pour structurer le code backend (Modèles Mongoose) :
+\begin{itemize}
+    \item \textbf{Classe Utilisateur :} Propriétés (id, nom, prenom, role). Méthodes : \texttt{login()}, \texttt{register()}, \texttt{updateProfile()}.
+    \item \textbf{Classe Vehicule :} Propriétés (immatriculation, marque, prix, statut). Méthodes : \texttt{checkDisponibilite()}, \texttt{bloquerVehicule()}.
+    \item \textbf{Classe Reservation :} Propriétés (dateDebut, dateFin, montant). Méthodes : \texttt{calculerTotal()}, \texttt{validerPaiement()}.
+\end{itemize}
+\textit{Explication : Ce diagramme définit la structure des objets manipulés par l'application. L'héritage n'a pas été utilisé ici, privilégiant la composition pour plus de flexibilité dans l'API.}
+
+\section{Architecture Générale du Système (Microservices)}
+
+Contrairement à une architecture classique (Monolithe), le système est divisé en 4 microservices indépendants, permettant à Prestige Maroc de mettre à jour la comptabilité sans risquer de casser le système de réservation :
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=3cm, auto]
+        \node [process, fill=purple!10] (react) {\texttt{enterprise-portal} (React.js)};
+        
+        \node [process, below left of=react, xshift=-2cm, yshift=-1.5cm] (crm) {\texttt{service-crm} (Node.js)};
+        \node [process, below of=react, yshift=-1.5cm] (loc) {\texttt{service-location} (Node.js)};
+        \node [process, below right of=react, xshift=2cm, yshift=-1.5cm] (erp) {\texttt{service-erp} (Node.js)};
+        
+        \node [database, below of=loc, yshift=-1cm] (mongo) {Base MongoDB Centralisée};
+        
+        \draw [arrow] (react) -- node[midway, left, xshift=-0.5cm] {Auth/Profil} (crm);
+        \draw [arrow] (react) -- node[midway, right] {Réservation} (loc);
+        \draw [arrow] (react) -- node[midway, right, xshift=0.5cm] {Facturation} (erp);
+        
+        \draw [arrow] (crm) -- (mongo);
+        \draw [arrow] (loc) -- (mongo);
+        \draw [arrow] (erp) -- (mongo);
+    \end{tikzpicture}
+    \caption{Architecture Microservices de la plateforme}
+\end{figure}
+
+\textit{Explication :}
+\begin{itemize}
+    \item Le \textbf{Portail Client/Admin (\texttt{enterprise-portal})} est l'unique point d'entrée visuel.
+    \item Lorsqu'un client se connecte, la requête est routée vers le \textbf{\texttt{service-crm}} qui vérifie l'identité.
+    \item Lorsqu'il loue une voiture, la requête part vers le \textbf{\texttt{service-location}} (qui utilise Redis pour afficher la flotte ultra-rapidement).
+    \item Lorsqu'une facture doit être générée, le portail contacte le \textbf{\texttt{service-erp}}, qui exécute la tâche lourde en arrière-plan de manière asynchrone.
+\end{itemize}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 import { Tag, Row, Col } from 'antd';
 import useLanguage from '@/locale/useLanguage';
@@ -124,6 +125,24 @@ export default function DashboardModule() {
     );
   });
 
+  // Données réalistes pour une agence de location (Saisonnalité : forte en été)
+  // Facturé = Chiffre d'affaires total (Devis acceptés/Factures)
+  // Encaissé = Ce qui a été réellement payé par les clients
+  const revenueData = [
+    { name: 'Jan', facture: 45000, encaisse: 42000 },
+    { name: 'Fév', facture: 48000, encaisse: 45000 },
+    { name: 'Mar', facture: 55000, encaisse: 51000 },
+    { name: 'Avr', facture: 62000, encaisse: 59000 },
+    { name: 'Mai', facture: 75000, encaisse: 70000 },
+    { name: 'Juin', facture: 110000, encaisse: 98000 },
+    { name: 'Juil', facture: 145000, encaisse: 135000 },
+    { name: 'Août', facture: 160000, encaisse: 150000 },
+    { name: 'Sep', facture: 95000, encaisse: 85000 },
+    { name: 'Oct', facture: 60000, encaisse: 55000 },
+    { name: 'Nov', facture: 50000, encaisse: 45000 },
+    { name: 'Déc', facture: 65000, encaisse: 60000 },
+  ];
+
   if (money_format_settings) {
     return (
       <>
@@ -156,10 +175,48 @@ export default function DashboardModule() {
         <div className="space30"></div>
         <Row gutter={[32, 32]}>
           <Col className="gutter-row w-full" sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-            <div className="whiteBox shadow" style={{ height: 458 }}>
-              <Row className="pad20" gutter={[0, 0]}>
-                {statisticCards}
-              </Row>
+            <div className="whiteBox shadow" style={{ height: 458, padding: '25px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <h3 style={{ color: '#22075e', margin: 0, fontSize: '18px', fontWeight: 600 }}>
+                  Analyse Financière : Facturé vs Encaissé (Saison 2026)
+                </h3>
+                <Tag color="cyan" style={{ fontSize: '14px', padding: '5px 10px' }}>Vue Globale</Tag>
+              </div>
+              <div style={{ width: '100%', height: 340 }}>
+                <ResponsiveContainer>
+                  <AreaChart
+                    data={revenueData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="colorFacture" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#1677ff" stopOpacity={0.4}/>
+                        <stop offset="95%" stopColor="#1677ff" stopOpacity={0}/>
+                      </linearGradient>
+                      <linearGradient id="colorEncaisse" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#52c41a" stopOpacity={0.6}/>
+                        <stop offset="95%" stopColor="#52c41a" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#666', fontSize: 12 }} dy={10} />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tickFormatter={(val) => `${val/1000}k MAD`} 
+                      tick={{ fill: '#666', fontSize: 12 }}
+                      dx={-10}
+                    />
+                    <Tooltip 
+                      formatter={(value, name) => [`${value.toLocaleString()} MAD`, name === 'facture' ? 'Total Facturé' : 'Montant Encaissé']}
+                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                    />
+                    <Legend verticalAlign="top" height={36} iconType="circle" />
+                    <Area type="monotone" name="facture" dataKey="facture" stroke="#1677ff" strokeWidth={3} fillOpacity={1} fill="url(#colorFacture)" />
+                    <Area type="monotone" name="encaisse" dataKey="encaisse" stroke="#52c41a" strokeWidth={3} fillOpacity={1} fill="url(#colorEncaisse)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </Col>
           <Col className="gutter-row w-full" sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>

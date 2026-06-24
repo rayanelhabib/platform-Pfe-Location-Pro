@@ -67,16 +67,25 @@ exports.generatePdf = async (
         moment: moment,
       });
 
-      pdf
-        .create(htmlContent, {
-          format: info.format,
-          orientation: 'portrait',
-          border: '10mm',
-        })
-        .toFile(targetLocation, function (error) {
-          if (error) throw new Error(error);
-          if (callback) callback();
-        });
+      const puppeteer = require('puppeteer');
+      const path = require('path');
+      
+      // Ensure directory exists
+      const dir = path.dirname(targetLocation);
+      if (!fs.existsSync(dir)){
+          fs.mkdirSync(dir, { recursive: true });
+      }
+
+      const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+      const page = await browser.newPage();
+      await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+      await page.pdf({
+        path: targetLocation,
+        format: info.format || 'A4',
+        margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' }
+      });
+      await browser.close();
+      if (callback) callback();
     }
   } catch (error) {
     throw new Error(error);

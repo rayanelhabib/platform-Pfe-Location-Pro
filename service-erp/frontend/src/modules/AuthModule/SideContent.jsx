@@ -20,19 +20,15 @@ export default function SideContent() {
       className="sideContent"
     >
       <div style={{ width: '100%' }}>
-        <img
-          src={logo}
-          alt="IDURAR ERP CRM"
-          style={{ margin: '0 0 40px', display: 'block' }}
-          height={63}
-          width={220}
-        />
+        <Title level={1} style={{ fontSize: 38, fontWeight: 800, color: '#000', marginBottom: 10 }}>
+          Prestige Maroc
+        </Title>
 
-        <Title level={1} style={{ fontSize: 28 }}>
-          Free Open Source ERP / CRM
+        <Title level={3} style={{ fontSize: 24, marginTop: 0 }}>
+          Plateforme ERP & CRM
         </Title>
         <Text>
-          Accounting / Invoicing / Quote App <b /> based on Node.js React.js Ant Design
+          Système de gestion interne pour agence de location de voitures.
         </Text>
 
         <div className="space20"></div>

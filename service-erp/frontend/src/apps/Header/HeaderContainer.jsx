@@ -12,8 +12,7 @@ import { FILE_BASE_URL } from '@/config/serverApiConfig';
 
 import useLanguage from '@/locale/useLanguage';
 
-import UpgradeButton from './UpgradeButton';
-
+// Upgrade button removed for enterprise feel
 export default function HeaderContent() {
   const currentAdmin = useSelector(selectCurrentAdmin);
   const { Header } = Layout;
@@ -87,12 +86,18 @@ export default function HeaderContent() {
   return (
     <Header
       style={{
-        padding: '20px',
-        background: '#ffffff',
+        padding: '0 32px',
+        background: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(8px)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
         display: 'flex',
         flexDirection: 'row-reverse',
+        alignItems: 'center',
         justifyContent: 'flex-start',
-        gap: ' 15px',
+        gap: '15px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 99,
       }}
     >
       <Dropdown
@@ -123,7 +128,7 @@ export default function HeaderContent() {
 
       {/* <AppsButton /> */}
 
-      <UpgradeButton />
+      {/* UpgradeButton removed */}
     </Header>
   );
 }
